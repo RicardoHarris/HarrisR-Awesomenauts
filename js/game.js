@@ -5,14 +5,15 @@ var game = {
 	// an object where to store game information
 	data : {
 		// score
-		score : 0
+		score : 0,
+                player: ""
 	},
 	
 	
 	// Run on page load.
 	"onload" : function () {
 	// Initialize the video.
-	if (!me.video.init("screen",  me.video.CANVAS, 480, 320, true, 'auto')) {
+	if (!me.video.init("screen",  me.video.CANVAS, 1067, 600, true, '1.0')) {
 		alert("Your browser does not support HTML5 canvas.");
 		return;
 	}
@@ -39,6 +40,13 @@ var game = {
 
 	// Run on game resources loaded.
 	"loaded" : function () {
+            me.pool.register("player", game.PlayerEntity, true);
+            //register player into game
+            me.pool.register("PlayerBase", game.PlayerBaseEntity);
+            //register player base into game
+            me.pool.register("EnemyBase", game.EnemyBaseEntity);
+            //register enemy base into game
+            
 		me.state.set(me.state.MENU, new game.TitleScreen());
 		me.state.set(me.state.PLAY, new game.PlayScreen());
 
