@@ -14,7 +14,9 @@ game.PlayScreen = me.ScreenObject.extend({
                 //adds player entity to game
                 
                 me.input.bindKey(me.input.KEY.D, "right");
-                me.input.bindKey(me.input.KEY.SPACE, "attack");
+                 me.input.bindKey(me.input.KEY.A, "left");
+                  me.input.bindKey(me.input.KEY.W, "jump");
+                me.input.bindKey(me.input.KEY.RIGHT, "attack");
 
 		// add our HUD to the game world
 		this.HUD = new game.HUD.Container();

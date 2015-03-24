@@ -32,11 +32,27 @@ game.PlayerEntity = me.Entity.extend({
             //me.timer.tick makes the movement look smooth
             this.body.vel.x += this.body.accel.x * me.timer.tick;
             this.flipX(true);
-            //sets animation to "walk" when moving right/ D key is pressed
+            //sets animation to "walk" when moving "right"/D key is pressed and
+            //flips the x-axis to face the character in the opposite direction
+        }else if(me.input.isKeyPressed("left")){
+            //adds to the position of my x by the velocity defined above in 
+            //setVelocity() and multiplying it by me.timer.tick
+            //me.timer.tick makes the movement look smooth
+             this.body.vel.x -= this.body.accel.x * me.timer.tick;
+             this.flipX(false);
+            //sets animation to "walk" when moving "left"/A key is pressed and
+            //doesn't flip the x-axis to face the character in the opposite direction
         } else {
             this.body.vel.x = 0;
-            //keeps player from moving right when "right" key is not pressed
+            //keeps player from moving right when key is not pressed
         }
+        
+        if(me.input.isKeyPressed("jump") && !this.jumping && !this.falling){
+            //doesn't allow character to jump whilst jumping or falling
+            this.jumping = true;
+            this.body.vel.y -= this.body.accel.y * me.timer.tick;
+        }
+        //implementation of jump ability
 
         if (me.input.isKeyPressed("attack")) {
             if (!this.renderable.isCurrentAnimation("attack")) {
@@ -90,7 +106,7 @@ game.PlayerBaseEntity = me.Entity.extend({
                 spritewidth: "100",
                 spriteheight: "100",
                 getShape: function() {
-                    return (new me.Rect(0, 0, 100, 100)).toPolygon();
+                    return (new me.Rect(0, 0, 50, 67)).toPolygon();
                 }
             }]);
         //spawns tower
@@ -135,7 +151,7 @@ game.EnemyBaseEntity = me.Entity.extend({
                 spritewidth: "100",
                 spriteheight: "100",
                 getShape: function() {
-                    return (new me.Rect(0, 0, 100, 100)).toPolygon();
+                    return (new me.Rect(0, 0, 50, 67)).toPolygon();
                 }
             }]);
         //spawns tower
