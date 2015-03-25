@@ -15,6 +15,9 @@ game.PlayerEntity = me.Entity.extend({
             }]);
         //_super = reaching to the constructor of entity
         this.body.setVelocity(5, 20);
+        
+        this.facing = "right";
+        //keeps track of which direction player is going
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
         //sets character velocity and allows screen to follow player
         this.renderable.addAnimation("idle", [78]);
@@ -31,6 +34,7 @@ game.PlayerEntity = me.Entity.extend({
             //setVelocity() and multiplying it by me.timer.tick
             //me.timer.tick makes the movement look smooth
             this.body.vel.x += this.body.accel.x * me.timer.tick;
+            this.facing = "right";
             this.flipX(true);
             //sets animation to "walk" when moving "right"/D key is pressed and
             //flips the x-axis to face the character in the opposite direction
@@ -38,6 +42,7 @@ game.PlayerEntity = me.Entity.extend({
             //adds to the position of my x by the velocity defined above in 
             //setVelocity() and multiplying it by me.timer.tick
             //me.timer.tick makes the movement look smooth
+            this.facing = "left";
              this.body.vel.x -= this.body.accel.x * me.timer.tick;
              this.flipX(false);
             //sets animation to "walk" when moving "left"/A key is pressed and
@@ -47,9 +52,9 @@ game.PlayerEntity = me.Entity.extend({
             //keeps player from moving right when key is not pressed
         }
         
-        if(me.input.isKeyPressed("jump") && !this.jumping && !this.falling){
+        if(me.input.isKeyPressed("jump") && !this.body.jumping && !this.body.falling){
             //doesn't allow character to jump whilst jumping or falling
-            this.jumping = true;
+            this.body.jumping = true;
             this.body.vel.y -= this.body.accel.y * me.timer.tick;
         }
         //implementation of jump ability
@@ -87,13 +92,40 @@ game.PlayerEntity = me.Entity.extend({
             }
         }
 
+me.collision.check(this, true, this.collideHandler.bind(this), true);
+//passes parameter with information about collision into function collideHandler
         this.body.update(delta);
 
 
         this._super(me.Entity, "update", [delta]);
         return true;
-
+    },
+    
+    collideHandler: function(response){
+        //response holds all information about a collision
+        if(response.b.type==='EnemyBaseEntity'){
+            //sees if colliding with enemy base entity
+            var ydif = this.pos.y - response.b.pos.y;
+            //sets difference beteween player's y and
+            var xdif = this.pos.x - response.b.pos.x;
+            //sets difference beteween player's y and
+            
+            console.log("xdif" + xdif + "ydif" + ydif);
+            
+            if(xdif>-54 && this.facing==="right" && (xdif<0)){
+                this.body.vel.x = 0;
+                //stops player from moving
+                this.pos.x = this.pos.x -1;
+                //moves player backwards 1 pixel
+            }else if(xdif<60 && this.facing==="left" && (xdif>0)){
+                this.body.vel = 0;
+                //stops player from moving
+                this.pos.x = this.pos.x +1;
+                //moves player forwards 1 pixel
+            }
+        }
     }
+    
 });
 //sets up basic entity "player"
 
