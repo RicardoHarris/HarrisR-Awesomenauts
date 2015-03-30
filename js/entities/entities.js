@@ -18,6 +18,9 @@ game.PlayerEntity = me.Entity.extend({
         
         this.facing = "right";
         //keeps track of which direction player is going
+        this.now = new Date().getTime();
+        this.lastHit = this.now;
+        this.lastAttack = new Date().getTime(); //haven't used this
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
         //sets character velocity and allows screen to follow player
         this.renderable.addAnimation("idle", [78]);
@@ -71,14 +74,6 @@ game.PlayerEntity = me.Entity.extend({
             }
         }
 
-        else if (this.body.vel.x !== 0) {
-            if (!this.renderable.isCurrentAnimation("walk")) {
-                this.renderable.setCurrentAnimation("walk");
-            }
-        } else {
-            this.renderable.setCurrentAnimation("idle");
-        }
-
         if (me.input.isKeyPressed("attack")) {
             if (!this.renderable.isCurrentAnimation("attack")) {
                 colsole.log(!this.renderable.isCurrentAnimation("attack"));
@@ -90,6 +85,13 @@ game.PlayerEntity = me.Entity.extend({
                 //switched to another animation
                 this.renderable.setAnimationFrame();
             }
+        }
+        else if (this.body.vel.x !== 0 && !this.renderable.isCurrentAnimation("attack")) {
+            if (!this.renderable.isCurrentAnimation("walk")) {
+                this.renderable.setCurrentAnimation("walk");
+            }
+        } else {
+            this.renderable.setCurrentAnimation("idle");
         }
 
 me.collision.check(this, true, this.collideHandler.bind(this), true);
@@ -110,19 +112,25 @@ me.collision.check(this, true, this.collideHandler.bind(this), true);
             var xdif = this.pos.x - response.b.pos.x;
             //sets difference beteween player's y and
             
-            console.log("xdif" + xdif + "ydif" + ydif);
-            
-            if(xdif>-54 && this.facing==="right" && (xdif<0)){
+            if(ydif<-40 && xdif<70 && xdif>-5){
+                this.body.falling = false;
+                //stops the player from falling
+                this.body.vel.y = -1;
+                //moves player
+            }else if(xdif>-54 && this.facing==="right" && (xdif<0)){
                 this.body.vel.x = 0;
                 //stops player from moving
-                this.pos.x = this.pos.x -1;
-                //moves player backwards 1 pixel
             }else if(xdif<60 && this.facing==="left" && (xdif>0)){
-                this.body.vel = 0;
+                this.body.vel.x = 0;
                 //stops player from moving
-                this.pos.x = this.pos.x +1;
-                //moves player forwards 1 pixel
             }
+            
+            if(this.renderable.isCurrentAnimation("attack") && this.now-this.lastHit >= 1000){
+                //checks to see if it has been 1 second since the base was last hit
+                this.lastHit = this.now;
+                response.b.loseHealth();
+            }
+            //lowers health of base by 1 if attacked
         }
     }
     
@@ -160,6 +168,7 @@ game.PlayerBaseEntity = me.Entity.extend({
 
     },
     update: function(delta) {
+        this.now = new Date().getTime();
         if (this.health <= 0) {
             this.broken = true;
         }
@@ -215,5 +224,69 @@ game.EnemyBaseEntity = me.Entity.extend({
     },
     onCollision: function() {
 
+    },
+    
+    loseHealth: function(){
+        this.health--;
+    }
+    //lowers health by one
+});
+
+game.EnemyCreep = me.Entity.extend({
+    init: function(x,y, settings){
+        this._super(me.Entity, 'init', [x, y, {
+              image: "creep1",
+              width: 32,
+              height: 64,
+              spritewidth: "32",
+              spriteheight: "64",
+              getShape: function(){
+                  return (new me.Rect(0, 0, 32, 64)).toPolygon();
+              }
+              
+        }]);
+    this.health = 10;
+    this.alwaysUpdate = true;
+    
+    this.body.setVelocity(3, 20);
+    
+    this.type = "EnemyCreep";
+    
+    this.renderable.addAnimation("walk", [3, 4, 5], 80);
+    this.renderable.setCurrentAnimation("walk");
+    
+    },
+    update: function(){
+        
+        
+        this.body.vel.x -= this.accel.x * me.timer.tick;
+        
+        this.body.update(delta);
+
+
+        this._super(me.Entity, "update", [delta]);
+        
+        return true;
+    }
+});
+
+game.GameManager = Object.extend({
+    init: function(x, y, settings){
+        this.now = new Date().getTime();
+        this.lastCreep = new Date().getTime();
+        
+        this.alwaysUpdate = true;
+    },
+    update: function(){
+        this.now = new Date().getTime();
+        
+        if(Math.round(this.now/1000)%10 ===0 && (this.now - this.lastCreep >= 1000)){
+            this.lastCreep = this.now;
+            var creepe = me.pool.pull("EnemyCreep", 1000, 0, {});
+            me.game.world.addChild(creepe, 5);
+        }
+        //checks to make sure that we have a multiple of 10
+        
+        return true;
     }
 });
