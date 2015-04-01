@@ -112,15 +112,15 @@ me.collision.check(this, true, this.collideHandler.bind(this), true);
             var xdif = this.pos.x - response.b.pos.x;
             //sets difference beteween player's y and
             
-            if(ydif<-40 && xdif<70 && xdif>-5){
+            if(ydif<-40 && xdif<70 && xdif>-45){
                 this.body.falling = false;
                 //stops the player from falling
                 this.body.vel.y = -1;
                 //moves player
-            }else if(xdif>-54 && this.facing==="right" && (xdif<0)){
+            }else if(xdif>-45 && this.facing==="right" && (xdif<0)){
                 this.body.vel.x = 0;
                 //stops player from moving
-            }else if(xdif<60 && this.facing==="left" && (xdif>0)){
+            }else if(xdif<70 && this.facing==="left" && (xdif>0)){
                 this.body.vel.x = 0;
                 //stops player from moving
             }
@@ -171,11 +171,13 @@ game.PlayerBaseEntity = me.Entity.extend({
         this.now = new Date().getTime();
         if (this.health <= 0) {
             this.broken = true;
+            this.renderable.setCurrentAnimation("broken");
         }
         this.body.update(delta);
 
         this._super(me.Entity, "update", [delta]);
         return true;
+        
     },
     
     loseHealth: function(damage) {
@@ -219,6 +221,7 @@ game.EnemyBaseEntity = me.Entity.extend({
 
     },
     update: function(delta) {
+        this.now = new Date().getTime();
         if (this.health <= 0) {
             this.broken = true;
             this.renderable.setCurrentAnimation("broken");
@@ -291,10 +294,12 @@ game.EnemyCreep = me.Entity.extend({
             this.body.vel.x = 0;
             //keeps moving creep to the right to maintain its position
             this.pos.x = this.pos.x + 1;
+           // console.log(this.now+" "+this.lastHit);
             //moves attacker to the right by 1
-            if((this.now-this.lastHit >=1000)){
+            if(((this.now-this.lastHit) >=1000)){
                 //checks that it has been one second since this creep hit a base
                 this.lastHit = this.now;
+                console.log(response.b.health);
                 //updates the lasthit timer
                 response.b.loseHealth(1);
                 //makes the player base call its loseHealth function and passes 
