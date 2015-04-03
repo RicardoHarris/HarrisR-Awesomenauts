@@ -16,13 +16,14 @@ game.PlayerEntity = me.Entity.extend({
         //_super = reaching to the constructor of entity
         this.type = 'PlayerEntity';
         //sets a type for the player
-        this.health = 20;
-        this.body.setVelocity(5, 20);
+        this.health = game.data.playerHealth;
+        this.body.setVelocity(game.data.playerMoveSpeed, 20);
         //speed player moves
         this.facing = "right";
         //keeps track of which direction player is going
         this.now = new Date().getTime();
         this.lastHit = this.now;
+        this.dead = false;
         this.lastAttack = new Date().getTime(); //haven't used this
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
         //sets character velocity and allows screen to follow player
@@ -37,7 +38,10 @@ game.PlayerEntity = me.Entity.extend({
     update: function(delta) {
 
         if (this.health <= 0) {
-            me.game.world.removeChild(this);
+            this.dead = true;
+            this.pos.x = 10;
+            this.pos.y = 0;
+            this.health = game.data.playerHealth;
         }
 
         if (me.input.isKeyPressed("right")) {
@@ -137,7 +141,7 @@ game.PlayerEntity = me.Entity.extend({
                 //stops player from moving
             }
 
-            if (this.renderable.isCurrentAnimation("attack") && this.now - this.lastHit >= 1000
+            if (this.renderable.isCurrentAnimation("attack") && this.now - this.lastHit >= game.data.playerAttackTimer
                     && (Math.abs(ydif) <= 40) &&
                     (((xdif > 0) && this.facing === "left") || ((xdif < 0) && this.facing === "right"))
                     //if player is to right of creep and facing left player can attack
@@ -145,7 +149,7 @@ game.PlayerEntity = me.Entity.extend({
                     ) {
                 //checks to see if it has been 1 second since the base was last hit
                 this.lastHit = this.now;
-                response.b.loseHealth();
+                response.b.loseHealth(game.data.playerAttack);
             }
             //lowers health of base by 1 if attacked
         } else if (response.b.type === 'EnemyCreep') {
@@ -169,10 +173,10 @@ game.PlayerEntity = me.Entity.extend({
                 //stops player from moving when facing right toward creep while attacking
             }
 
-            if (this.renderable.isCurrentAnimation("attack") && this.now - this.lastHit >= 1000) {
+            if (this.renderable.isCurrentAnimation("attack") && this.now - this.lastHit >= game.data.playerAttackTimer) {
                 console.log(this.health);
                 this.lastHit = this.now;
-                response.b.loseHealth(1);
+                response.b.loseHealth(game.data.playerAttack);
             }
         }
     }
@@ -195,7 +199,7 @@ game.PlayerBaseEntity = me.Entity.extend({
         //spawns tower
         this.broken = false;
         //makes sure tower is not broken
-        this.health = 10;
+        this.health = game.data.enemyBaseHealth;
         //sets up a tower health system
         this.alwaysUpdate = true;
         //allows tower to allways update weather visible on screen or not
@@ -247,7 +251,7 @@ game.EnemyBaseEntity = me.Entity.extend({
         //spawns tower
         this.broken = false;
         //makes sure tower is not broken
-        this.health = 10;
+        this.health = game.data.enemyBaseHealth;
         //sets up a tower health system
         this.alwaysUpdate = true;
         //allows tower to allways update weather visible on screen or not
@@ -262,6 +266,12 @@ game.EnemyBaseEntity = me.Entity.extend({
 
     },
     update: function(delta) {
+
+        if (this.health <= 0) {
+            me.game.world.removeChild(this);
+        }
+        //removes enemy from world if health = 0
+
         this.now = new Date().getTime();
         if (this.health <= 0) {
             this.broken = true;
@@ -294,7 +304,7 @@ game.EnemyCreep = me.Entity.extend({
                 }
 
             }]);
-        this.health = 10;
+        this.health = game.data.enemyCreepHealth;
         this.alwaysUpdate = true;
         this.attacking = false;
         //this.attacking lets us know if our enemy is currently attacking
@@ -313,6 +323,7 @@ game.EnemyCreep = me.Entity.extend({
     },
     loseHealth: function(damage) {
         this.health = this.health - damage;
+        console.log(this.health);
     },
     update: function(delta) {
         if (this.health <= 0) {
@@ -345,7 +356,7 @@ game.EnemyCreep = me.Entity.extend({
                 //checks that it has been one second since this creep hit a base
                 this.lastHit = this.now;
                 //updates the lasthit timer
-                response.b.loseHealth(1);
+                response.b.loseHealth(game.data.enemyCreepAttack);
                 //makes the player base call its loseHealth function and passes 
                 //it a damage of 1
             }
@@ -364,7 +375,7 @@ game.EnemyCreep = me.Entity.extend({
                 //checks that it has been one second since this creep hit something
                 this.lastHit = this.now;
                 //updates the lasthit timer
-                response.b.loseHealth(1);
+                response.b.loseHealth(game.data.enemyCreepAttack);
                 //makes the player base call its loseHealth function and passes 
                 //it a damage of 1
             }
@@ -384,6 +395,7 @@ game.GameManager = Object.extend({
         this.now = new Date().getTime();
 
         if (Math.round(this.now / 1000) % 10 === 0 && (this.now - this.lastCreep >= 1000)) {
+            //% is called "mod" and it finds the remainder
             this.lastCreep = this.now;
             var creepe = me.pool.pull("EnemyCreep", 2000, 0, {});
             me.game.world.addChild(creepe, 5);
