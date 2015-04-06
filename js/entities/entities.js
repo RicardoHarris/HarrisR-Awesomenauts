@@ -17,6 +17,7 @@ game.PlayerEntity = me.Entity.extend({
         this.type = 'PlayerEntity';
         //sets a type for the player
         this.health = game.data.playerHealth;
+        console.log(this.health);
         this.body.setVelocity(game.data.playerMoveSpeed, 20);
         //speed player moves
         this.facing = "right";
@@ -36,7 +37,7 @@ game.PlayerEntity = me.Entity.extend({
         //sets the current animation to the "idle" animation
     },
     update: function(delta) {
-
+        this.now = new Date().getTime();
         if (this.health <= 0) {
             this.dead = true;
             this.pos.x = 10;
@@ -78,19 +79,6 @@ game.PlayerEntity = me.Entity.extend({
             if (!this.renderable.isCurrentAnimation("attack")) {
                 //Sets current animation to attack and once that is over goes
                 //back into the idle animation
-                this.renderable.setCurrentAnimation("attack");
-                //Makes it so that the next time we start this sequence we begin
-                //from the first animation, not wherever we left off when we
-                //switched to another animation
-                this.renderable.setAnimationFrame();
-            }
-        }
-
-        if (me.input.isKeyPressed("attack")) {
-            if (!this.renderable.isCurrentAnimation("attack")) {
-                colsole.log(!this.renderable.isCurrentAnimation("attack"));
-                //Sets current animation to attack and once that is over goes
-                //back into the idle animation
                 this.renderable.setCurrentAnimation("attack", "idle");
                 //Makes it so that the next time we start this sequence we begin
                 //from the first animation, not wherever we left off when we
@@ -115,6 +103,7 @@ game.PlayerEntity = me.Entity.extend({
         return true;
     },
     loseHealth: function(damage) {
+        console.log(damage + " " + this.health);
         this.health = this.health - damage;
     },
     //damages player
@@ -172,7 +161,6 @@ game.PlayerEntity = me.Entity.extend({
                 }
                 //stops player from moving when facing right toward creep while attacking
             }
-
             if (this.renderable.isCurrentAnimation("attack") && this.now - this.lastHit >= game.data.playerAttackTimer) {
                 console.log(this.health);
                 this.lastHit = this.now;
