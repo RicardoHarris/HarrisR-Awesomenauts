@@ -13,7 +13,7 @@ game.PlayScreen = me.ScreenObject.extend({
         me.game.world.addChild(game.data.player, 15);
         //adds player entity to game
 
-        this.resetPlayer(0, 420)
+        this.resetPlayer(0, 420);
 
         var gamemanager = me.pool.pull("GameManager", 0, 0, {});
         me.game.world.addChild(gamemanager, 0);
@@ -34,7 +34,7 @@ game.PlayScreen = me.ScreenObject.extend({
         // remove the HUD from the game world
         me.game.world.removeChild(this.HUD);
     },
-    resetPlayer: function() {
+    resetPlayer: function(x, y) {
         game.data.player = me.pool.pull("player", x, y, {});
         //pulls player into game
         me.game.world.addChild(game.data.player, 15);

@@ -66,6 +66,7 @@ var game = {
 		me.state.set(me.state.PLAY, new game.PlayScreen());
 
 		// Start the game.
-		me.state.change(me.state.PLAY);
+		me.state.change(me.state.MENU);
+                //Puts menu on screen when game starts
 	}
 };
