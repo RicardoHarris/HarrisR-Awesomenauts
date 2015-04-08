@@ -17,7 +17,6 @@ game.PlayerEntity = me.Entity.extend({
         this.type = 'PlayerEntity';
         //sets a type for the player
         this.health = game.data.playerHealth;
-        console.log(this.health);
         this.body.setVelocity(game.data.playerMoveSpeed, 20);
         //speed player moves
         this.facing = "right";
@@ -25,6 +24,7 @@ game.PlayerEntity = me.Entity.extend({
         this.now = new Date().getTime();
         this.lastHit = this.now;
         this.dead = false;
+        this.attack = game.data.playerAttack;
         this.lastAttack = new Date().getTime(); //haven't used this
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
         //sets character velocity and allows screen to follow player
@@ -100,7 +100,6 @@ game.PlayerEntity = me.Entity.extend({
         return true;
     },
     loseHealth: function(damage) {
-        console.log(damage + " " + this.health);
         this.health = this.health - damage;
     },
     //damages player
@@ -135,6 +134,14 @@ game.PlayerEntity = me.Entity.extend({
                     ) {
                 //checks to see if it has been 1 second since the base was last hit
                 this.lastHit = this.now;
+
+                if (response.b.health <= game.data.playerAttack) {
+                    game.data.gold += 1;
+                    //adds 1 gold for a creep kill
+                    console.log("Current Gold: " + game.data.gold);
+                }
+                //if the creep's health is less than our attack then execute code in if statement
+
                 response.b.loseHealth(game.data.playerAttack);
             }
             //lowers health of base by 1 if attacked
@@ -159,7 +166,6 @@ game.PlayerEntity = me.Entity.extend({
                 //stops player from moving when facing right toward creep while attacking
             }
             if (this.renderable.isCurrentAnimation("attack") && this.now - this.lastHit >= game.data.playerAttackTimer) {
-                console.log(this.health);
                 this.lastHit = this.now;
                 response.b.loseHealth(game.data.playerAttack);
             }
@@ -168,113 +174,6 @@ game.PlayerEntity = me.Entity.extend({
 
 });
 //sets up basic entity "player"
-
-game.PlayerBaseEntity = me.Entity.extend({
-    init: function(x, y, settings) {
-        this._super(me.Entity, 'init', [x, y, {
-                image: "tower",
-                width: 100,
-                height: 100,
-                spritewidth: "100",
-                spriteheight: "100",
-                getShape: function() {
-                    return (new me.Rect(0, 0, 50, 67)).toPolygon();
-                }
-            }]);
-        //spawns tower
-        this.broken = false;
-        //makes sure tower is not broken
-        this.health = game.data.enemyBaseHealth;
-        //sets up a tower health system
-        this.alwaysUpdate = true;
-        //allows tower to allways update weather visible on screen or not
-        this.body.onCollision = this.onCollision.bind(this);
-        //makes tower collidable
-
-        this.type = "PlayerBase";
-        //checks what player is running into when colliding with other things
-        this.renderable.addAnimation("idle", [0]);
-        this.renderable.addAnimation("broken", [1]);
-        this.renderable.setCurrentAnimation("idle");
-
-
-    },
-    update: function(delta) {
-        this.now = new Date().getTime();
-        if (this.health <= 0) {
-            this.broken = true;
-            this.renderable.setCurrentAnimation("broken");
-        }
-        this.body.update(delta);
-
-        this._super(me.Entity, "update", [delta]);
-        return true;
-
-    },
-    loseHealth: function(damage) {
-        this.health = this.health - damage;
-        //makes base lose health as many times as passed in
-    },
-    onCollision: function() {
-
-    }
-});
-//sets up basic entity "PlayerBaseEntity"
-
-game.EnemyBaseEntity = me.Entity.extend({
-    init: function(x, y, settings) {
-        this._super(me.Entity, 'init', [x, y, {
-                image: "tower",
-                width: 100,
-                height: 100,
-                spritewidth: "100",
-                spriteheight: "100",
-                getShape: function() {
-                    return (new me.Rect(0, 0, 50, 67)).toPolygon();
-                }
-            }]);
-        //spawns tower
-        this.broken = false;
-        //makes sure tower is not broken
-        this.health = game.data.enemyBaseHealth;
-        //sets up a tower health system
-        this.alwaysUpdate = true;
-        //allows tower to allways update weather visible on screen or not
-        this.body.onCollision = this.onCollision.bind(this);
-        //makes tower collidable
-
-        this.type = "EnemyBaseEntity";
-        //checks what player is running into when colliding with other things
-        this.renderable.addAnimation("idle", [0]);
-        this.renderable.addAnimation("broken", [1]);
-        this.renderable.setCurrentAnimation("idle");
-
-    },
-    update: function(delta) {
-
-        if (this.health <= 0) {
-            me.game.world.removeChild(this);
-        }
-        //removes enemy from world if health = 0
-
-        this.now = new Date().getTime();
-        if (this.health <= 0) {
-            this.broken = true;
-            this.renderable.setCurrentAnimation("broken");
-        }
-        this.body.update(delta);
-
-        this._super(me.Entity, "update", [delta]);
-        return true;
-    },
-    onCollision: function() {
-
-    },
-    loseHealth: function() {
-        this.health--;
-    }
-    //lowers health by one
-});
 
 game.EnemyCreep = me.Entity.extend({
     init: function(x, y, settings) {
@@ -308,7 +207,6 @@ game.EnemyCreep = me.Entity.extend({
     },
     loseHealth: function(damage) {
         this.health = this.health - damage;
-        console.log(this.health);
     },
     update: function(delta) {
         if (this.health <= 0) {
@@ -369,30 +267,3 @@ game.EnemyCreep = me.Entity.extend({
     }
 });
 
-game.GameManager = Object.extend({
-    init: function(x, y, settings) {
-        this.now = new Date().getTime();
-        this.lastCreep = new Date().getTime();
-
-        this.alwaysUpdate = true;
-    },
-    update: function() {
-        this.now = new Date().getTime();
-        
-        if(game.data.player.dead){
-            me.game.world.removeChild(game.data.player);
-            me.state.current().resetPlayer(10, 0);
-        }
-        //removes child and resets player when dead
-
-        if (Math.round(this.now / 1000) % 10 === 0 && (this.now - this.lastCreep >= 1000)) {
-            //% is called "mod" and it finds the remainder
-            this.lastCreep = this.now;
-            var creepe = me.pool.pull("EnemyCreep", 2000, 0, {});
-            me.game.world.addChild(creepe, 5);
-        }
-        //checks to make sure that we have a multiple of 10
-
-        return true;
-    }
-});

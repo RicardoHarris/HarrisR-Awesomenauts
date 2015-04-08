@@ -10,10 +10,8 @@ game.PlayScreen = me.ScreenObject.extend({
         me.levelDirector.loadLevel("level01");
         game.data.player = me.pool.pull("player", 30, 30, {});
         //pulls player into game
-        me.game.world.addChild(game.data.player, 15);
-        //adds player entity to game
 
-        this.resetPlayer(0, 420);
+        this.resetPlayer(10, 0);
 
         var gamemanager = me.pool.pull("GameManager", 0, 0, {});
         me.game.world.addChild(gamemanager, 0);
