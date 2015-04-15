@@ -32,7 +32,11 @@ game.PlayerBaseEntity = me.Entity.extend({
         this.now = new Date().getTime();
         if (this.health <= 0) {
             this.broken = true;
+            //tower broken
+            game.data.win = false;
+            //game is lost
             this.renderable.setCurrentAnimation("broken");
+            //tower's "broken" animation is performed
         }
         this.body.update(delta);
 

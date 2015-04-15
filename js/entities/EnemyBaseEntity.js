@@ -12,7 +12,9 @@ game.EnemyBaseEntity = me.Entity.extend({
             }]);
         //spawns tower
         this.broken = false;
-        //makes sure tower is not broken
+        //tower is not broken
+        game.data.win = true;
+        //the player has won the game
         this.health = game.data.enemyBaseHealth;
         //sets up a tower health system
         this.alwaysUpdate = true;
