@@ -35,7 +35,7 @@ game.PlayScreen = me.ScreenObject.extend({
         me.input.bindKey(me.input.KEY.D, "right");
         me.input.bindKey(me.input.KEY.A, "left");
         me.input.bindKey(me.input.KEY.W, "jump");
-        me.input.bindKey(me.input.KEY.RIGHT, "attack");
+        me.input.bindKey(me.input.KEY.SPACE, "attack");
     },
     onDestroyEvent: function() {
         // remove the HUD from the game world

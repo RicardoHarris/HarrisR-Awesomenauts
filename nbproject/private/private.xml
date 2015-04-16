@@ -5,10 +5,7 @@
         <group>
             <file>file:/C:/xampp/htdocs/HarrisR-Awesomenauts/js/game.js</file>
             <file>file:/C:/xampp/htdocs/HarrisR-Awesomenauts/js/entities/GameManager.js</file>
-            <file>file:/C:/xampp/htdocs/HarrisR-Awesomenauts/js/entities/EnemyBaseEntity.js</file>
             <file>file:/C:/xampp/htdocs/HarrisR-Awesomenauts/js/entities/entities.js</file>
-            <file>file:/C:/xampp/htdocs/HarrisR-Awesomenauts/js/entities/EnemyCreep.js</file>
-            <file>file:/C:/xampp/htdocs/HarrisR-Awesomenauts/js/entities/PlayerBaseEntity.js</file>
             <file>file:/C:/xampp/htdocs/HarrisR-Awesomenauts/js/screens/play.js</file>
         </group>
     </open-files>
