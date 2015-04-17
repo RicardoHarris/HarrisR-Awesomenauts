@@ -13,7 +13,7 @@ game.PlayerEntity = me.Entity.extend({
 
         this.addAnimation();
     },
-    setSuper: function(x ,y) {
+    setSuper: function(x, y) {
         this._super(me.Entity, 'init', [x, y, {
                 image: "player",
                 width: 64,
@@ -164,7 +164,9 @@ game.PlayerEntity = me.Entity.extend({
             this.body.vel.x = 0;
             //stops player from moving
         }
-
+        if (this.checkAttack(xdif, ydif)) {
+            response.b.loseHealth(game.data.playerAttack);
+        }
     },
     collideWithEnemyCreep: function(response) {
         var xdif = this.pos.x - response.b.pos.x;
@@ -214,10 +216,10 @@ game.PlayerEntity = me.Entity.extend({
         //if the creep's health is less than our attack then execute code in if statement
         response.b.loseHealth(game.data.playerAttack);
     },
-    killCreep: function(){
+    killCreep: function() {
         game.data.gold += 1;
-            //adds 1 gold for a creep kill
-            console.log("Current Gold: " + game.data.gold);
+        //adds 1 gold for a creep kill
+        console.log("Current Gold: " + game.data.gold);
     }
 });
 //sets up basic entity "player"

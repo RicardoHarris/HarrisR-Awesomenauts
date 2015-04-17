@@ -11,10 +11,7 @@ game.EnemyBaseEntity = me.Entity.extend({
                 }
             }]);
         //spawns tower
-        this.broken = false;
-        //tower is not broken
-        game.data.win = true;
-        //the player has won the game
+        
         this.health = game.data.enemyBaseHealth;
         //sets up a tower health system
         this.alwaysUpdate = true;
@@ -33,8 +30,11 @@ game.EnemyBaseEntity = me.Entity.extend({
 
         this.now = new Date().getTime();
         if (this.health <= 0) {
+            game.data.win = true;
+            //game is won
             this.broken = true;
             this.renderable.setCurrentAnimation("broken");
+            
         }
         this.body.update(delta);
 
@@ -44,8 +44,10 @@ game.EnemyBaseEntity = me.Entity.extend({
     onCollision: function() {
 
     },
-    loseHealth: function() {
-        this.health--;
+    loseHealth: function(damage) {
+        this.health = this.health - damage;
+        //makes base lose health as many times as passed in
     }
+
     //lowers health by one
 });
