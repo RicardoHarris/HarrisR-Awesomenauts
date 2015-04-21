@@ -15,13 +15,13 @@ game.PlayScreen = me.ScreenObject.extend({
 
         var gameTimerManager = me.pool.pull("GameTimerManager", 0, 0, {});
         me.game.world.addChild(gameTimerManager, 0);
-        
+
         var heroDeathManager = me.pool.pull("HeroDeathManager", 0, 0, {});
         me.game.world.addChild(heroDeathManager, 0);
-        
+
         var expirienceManager = me.pool.pull("ExpirienceManager", 0, 0, {});
         me.game.world.addChild(expirienceManager, 0);
-        
+
         this.bindKeys();
 
         // add our HUD to the game world
@@ -31,7 +31,11 @@ game.PlayScreen = me.ScreenObject.extend({
     /**
      *  action to perform when leaving this screen (state change)
      */
-    bindKeys: function(){
+    bindKeys: function() {
+        me.input.bindKey(me.input.KEY.B, "buy");
+        me.input.bindKey(me.input.KEY.1, "skill1");
+        me.input.bindKey(me.input.KEY.2, "skill2");
+        me.input.bindKey(me.input.KEY.3, "skill3");
         me.input.bindKey(me.input.KEY.D, "right");
         me.input.bindKey(me.input.KEY.A, "left");
         me.input.bindKey(me.input.KEY.W, "jump");

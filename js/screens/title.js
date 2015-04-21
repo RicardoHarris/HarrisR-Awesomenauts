@@ -29,10 +29,12 @@ game.TitleScreen = me.ScreenObject.extend({
                 me.save.remove('exp3');
                 me.save.remove('exp4');
                 me.save.remove('exp5');
+                me.save.add({exp: 0, exp1: 0, exp2: 0, exp3: 0, exp4: 0, exp5: 0});
+
                 me.state.change(me.state.PLAY);
             }
         })));
-        
+
         me.game.world.addChild(new (me.Renderable.extend({
             init: function() {
                 this._super(me.Renderable, 'init', [380, 340, 250, 50]);
@@ -57,13 +59,13 @@ game.TitleScreen = me.ScreenObject.extend({
                 game.data.exp1 = me.save.exp3;
                 game.data.exp1 = me.save.exp4;
                 game.data.exp1 = me.save.exp5;
-                
+
                 me.input.releasePointerEvent('pointerdown', this);
                 me.state.change(me.state.SPENDEXP);
             }
         })));
 
-   },
+    },
     /**	
      *  action to perform when leaving this screen (state change)
      */

@@ -19,7 +19,7 @@ game.GameTimerManager = Object.extend({
             console.log("Furst: LOCKED ON");
             //% is called "mod" and it finds the remainder
             console.log("Secund: LOCKED ON");
-            game.data.gold += 1;
+            game.data.gold += game.data.exp1 + 1;
             console.log("Current Gold: " + game.data.gold);
         }
     },
@@ -79,5 +79,14 @@ game.ExpirienceManager = Object.extend({
         
         me.save.exp2 = 4;
         //for testing purposes only
+    }
+});
+
+game.SpendGold = Object.extend({
+    init: function(x, y, settings){
+        
+    },
+    update: function(){
+        return true;
     }
 });

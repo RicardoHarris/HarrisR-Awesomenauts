@@ -26,7 +26,9 @@ var game = {
                 exp3: 0,
                 exp4: 0,
                 exp5: 0,
-                win: ""
+                win: "",
+                pausePos: "",
+                buyScreen: ""
                         
 	},
 	
@@ -84,7 +86,7 @@ var game = {
             
 		me.state.set(me.state.MENU, new game.TitleScreen());
 		me.state.set(me.state.PLAY, new game.PlayScreen());
-                me.state.set(me.state.SPENDEXP, new game.SpendExp());
+                me.state.set(me.state.SPENDEXP, new game.SpendScreen());
                 //MENU and PLAY are established variables that represent numbers
 
 		// Start the game.
