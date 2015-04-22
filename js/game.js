@@ -21,14 +21,22 @@ var game = {
                 player: "",
                 exp: 0,
                 gold: 0,
+                ability1: 0,
+                ability2: 0,
+                ability3: 0,
+                skill1: 0,
+                skill2: 0,
+                skill3: 0,
                 exp1: 0,
                 exp2: 0,
                 exp3: 0,
                 exp4: 0,
                 exp5: 0,
+                exp6: 0,
                 win: "",
                 pausePos: "",
-                buyScreen: ""
+                buyScreen: "",
+                buytext: "",
                         
 	},
 	
@@ -83,6 +91,8 @@ var game = {
             me.pool.register("HeroDeathManager", game.HeroDeathManager);
             
             me.pool.register("ExpirienceManager", game.ExpirienceManager);
+            
+            me.pool.register("SpendGold", game.SpendGold);
             
 		me.state.set(me.state.MENU, new game.TitleScreen());
 		me.state.set(me.state.PLAY, new game.PlayScreen());

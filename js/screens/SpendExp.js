@@ -12,6 +12,9 @@ game.SpendScreen = me.ScreenObject.extend({
         me.input.bindKey(me.input.KEY.F4, "F4");
         me.input.bindKey(me.input.KEY.F5, "F5");
         var exp1cost = ((game.data.exp1 + 1) * 10);
+        var exp2cost = ((game.data.exp2 + 1) * 10);
+        var exp3cost = ((game.data.exp3 + 1) * 10);
+        var exp4cost = ((game.data.exp4 + 1) * 10);
 
         me.game.world.addChild(new (me.Renderable.extend({
             init: function() {
@@ -26,9 +29,9 @@ game.SpendScreen = me.ScreenObject.extend({
                 this.font.draw(renderer.getContext(), "-Press F1 - F4 to Buy, F5 to Skip-", this.pos.x, this.pos.y);
                 this.font.draw(renderer.getContext(), "Current Exp: " + game.data.exp.toString(), this.pos.x + 100, this.pos.y + 50);
                 this.font.draw(renderer.getContext(), "F1: Increase Gold Production Current Level " + game.data.exp1.toString() + " Price: " + exp1cost, this.pos.x, this.pos.y + 100);
-                this.font.draw(renderer.getContext(), "F2: Add Starting Gold Current Level " + game.data.exp1.toString() + " Price: " + exp1cost, this.pos.x, this.pos.y + 150);
-                this.font.draw(renderer.getContext(), "F3: Increase Attack Damage Current Level " + game.data.exp1.toString() + " Price: " + exp1cost, this.pos.x, this.pos.y + 200);
-                this.font.draw(renderer.getContext(), "F4: Increase Startiing Health Current Level " + game.data.exp1.toString() + " Price: " + exp1cost, this.pos.x, this.pos.y + 250);
+                this.font.draw(renderer.getContext(), "F2: Add Starting Gold Current Level " + game.data.exp2.toString() + " Price: " + exp2cost, this.pos.x, this.pos.y + 150);
+                this.font.draw(renderer.getContext(), "F3: Increase Attack Damage Current Level " + game.data.exp3.toString() + " Price: " + exp3cost, this.pos.x, this.pos.y + 200);
+                this.font.draw(renderer.getContext(), "F4: Increase Startiing Health Current Level " + game.data.exp4.toString() + " Price: " + exp4cost, this.pos.x, this.pos.y + 250);
             }
 
         })));
