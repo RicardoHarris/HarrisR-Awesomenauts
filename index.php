@@ -12,19 +12,36 @@
         <link rel="apple-touch-icon" sizes="152x152" href="icons/touch-icon-ipad-retina-152x152.png">
 	</head>
 	<body>
-		<!-- Canvas placeholder -->
-		<div id="screen"></div>
-
-		<!-- melonJS Library -->
-		<!-- build:js js/app.min.js -->
-		<script type="text/javascript" src="lib/melonJS-1.1.0-min.js"></script>
-
-		<!-- Plugin(s) -->
-		<script type="text/javascript" src="lib/plugins/debugPanel.js"></script>
 		
-		<!-- Game Scripts -->
+		<div id="screen"></div>
+                <!-- Canvas placeholder -->
+
+                <form id="input" method="post">
+                    <div class="field">
+                        <label for="username">Username</label>
+                        <input type='text' name='username' id='username' autocomplete='off'>
+                    </div>
+                    <div class='password'>
+                        <label for='password'>Password</label>
+                        <input type='text' name='password' id='password' autocomplete='off'>
+                    </div>
+                    
+                    <button type='button' id='register'>Register</button>
+                    <button type='button' id='load'>Load</button>
+                    <button type='button' id='mainmenu'>Main Menu</button>
+                    
+                </form>
+		
+		<script type="text/javascript" src="lib/melonJS-1.1.0-min.js"></script>
+                <!-- melonJS Library -->
+		<!-- build:js js/app.min.js -->
+
+		<script type="text/javascript" src="lib/plugins/debugPanel.js"></script>
+                <!-- Plugin(s) -->
+		
 		<script type="text/javascript" src="js/game.js"></script>
 		<script type="text/javascript" src="js/resources.js"></script>
+                <!-- Game Scripts -->
 
 		<script type="text/javascript" src="js/entities/entities.js"></script>
                 <script type="text/javascript" src="js/entities/EnemyBaseEntity.js"></script>
@@ -40,6 +57,8 @@
 		<script type="text/javascript" src="js/screens/title.js"></script>
 		<script type="text/javascript" src="js/screens/play.js"></script>
                 <script type="text/javascript" src="js/screens/SpendExp.js"></script>
+                <script type="text/javascript" src="js/screens/LoadProfile.js"></script>
+                <script type="text/javascript" src="js/screens/NewProfile.js"></script>
 		<!-- /build -->
 		<!-- Bootstrap & Mobile optimization tricks -->
 		<script type="text/javascript">
