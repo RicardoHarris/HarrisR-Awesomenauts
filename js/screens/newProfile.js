@@ -7,7 +7,7 @@ game.NewProfile = me.ScreenObject.extend({
         //puts new screen in when gme starts
         
         document.getElementById("input").style.visibility = "visible";
-        document.getElementById("load").style.visibility = "visible";
+        document.getElementById("register").style.visibility = "visible";
         //makes input and load visible
 
         me.input.unbindKey(me.input.KEY.B);
@@ -48,7 +48,7 @@ game.NewProfile = me.ScreenObject.extend({
      */
     onDestroyEvent: function() {
         document.getElementById("input").style.visibility = "hidden";
-        document.getElementById("load").style.visibility = "hidden";
+        document.getElementById("register").style.visibility = "hidden";
         //hides input and load
     }
 });

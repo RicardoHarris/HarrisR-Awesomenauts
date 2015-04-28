@@ -31,9 +31,9 @@ if ($query->num_rows == 1) {
         echo json_encode($array);
         
     } else {
-        echo "<p>Invalid username/password(1)</p>";
+        echo "Invalid username/password";
     }
 } else {
-    echo "<p>Invalid username/password(2)</p>";
+    echo "Invalid username/password";
 }
         //If there is only one of these users active and the pasword is correct the user is taken to the index if not they are notified of an invalid username/password

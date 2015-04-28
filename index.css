@@ -37,14 +37,13 @@ body {
     text-align: center;
     visibility: hidden;
 }
-//hides input and aligns it to center whils
+
 
 #load{
     visibility: hidden;
 }
-//hides load
+
 
 #register{
     visibility: hidden;
 }
-//hides register
