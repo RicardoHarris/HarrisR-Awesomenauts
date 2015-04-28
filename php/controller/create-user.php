@@ -29,7 +29,7 @@
             . "exp4 = 0");
          //Inserts user data
          
-         $_SESSION["name"];
+         $_SESSION["name"] = $username;
     }
     else {
         echo "Username already exists!";

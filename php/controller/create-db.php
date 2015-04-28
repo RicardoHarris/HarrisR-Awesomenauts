@@ -32,7 +32,8 @@ $query = $_SESSION["connection"]->query("CREATE TABLE users("
         . "exp int(4),"
         . "exp1 int(4),"
         . "exp2 int(4),"
-        . "exp int(4),"
+        . "exp3 int(4),"
+        . "exp4 int(4),"
         . "PRIMARY KEY (id))");
 //Creates a users table
 
