@@ -22,7 +22,7 @@ game.PlayScreen = me.ScreenObject.extend({
         var expirienceManager = me.pool.pull("ExpirienceManager", 0, 0, {});
         me.game.world.addChild(expirienceManager, 0);
         
-        var expirienceManager = me.pool.pull("SpendGold", 0, 0, {});
+        var spendGold = me.pool.pull("SpendGold", 0, 0, {});
         me.game.world.addChild(spendGold, 0);
 
         this.bindKeys();
