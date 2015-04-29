@@ -24,8 +24,7 @@ game.LoadProfile = me.ScreenObject.extend({
                 this.font = new me.Font("Arial", 26, "white"); 
             },
             draw: function(renderer) {
-                this.font.draw(renderer.getContext(), "-LOG IN-", this.pos.x, this.pos.y);
-                this.font.draw(renderer.getContext(), "-Enter Username and Password-", this.pos.x, this.pos.y + 250);
+                this.font.draw(renderer).getContext(), "Enter Username & Password";
             }
 
         })));
@@ -35,6 +34,7 @@ game.LoadProfile = me.ScreenObject.extend({
      *  action to perform when leaving this screen (state change)
      */
     onDestroyEvent: function() {
-
+        document.getElementById("input").style.visibility = "hidden";
+        document.getElementById("load").style.visibility = "hidden";
     }
 });
