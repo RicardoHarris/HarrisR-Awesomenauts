@@ -11,7 +11,7 @@ game.EnemyBaseEntity = me.Entity.extend({
                 }
             }]);
         //spawns tower
-        
+
         this.health = game.data.enemyBaseHealth;
         //sets up a tower health system
         this.alwaysUpdate = true;
@@ -24,6 +24,7 @@ game.EnemyBaseEntity = me.Entity.extend({
         this.renderable.addAnimation("idle", [0]);
         this.renderable.addAnimation("broken", [1]);
         this.renderable.setCurrentAnimation("idle");
+        //sets and adds enemy base animations
 
     },
     update: function(delta) {
@@ -34,12 +35,13 @@ game.EnemyBaseEntity = me.Entity.extend({
             //game is won
             this.broken = true;
             this.renderable.setCurrentAnimation("broken");
-            
+            //sets tower animation to broken
         }
         this.body.update(delta);
 
         this._super(me.Entity, "update", [delta]);
         return true;
+        //updates ememy base
     },
     onCollision: function() {
 
@@ -48,6 +50,4 @@ game.EnemyBaseEntity = me.Entity.extend({
         this.health = this.health - damage;
         //makes base lose health as many times as passed in
     }
-
-    //lowers health by one
 });

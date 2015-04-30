@@ -2,6 +2,7 @@ game.PlayerEntity = me.Entity.extend({
     init: function(x, y, settings) {
         //init = constructor
         this.setSuper();
+        //calls set super function
         this.setPlayerTimers();
         this.setAttributes();
         this.type = 'PlayerEntity';
@@ -12,6 +13,7 @@ game.PlayerEntity = me.Entity.extend({
         //sets character velocity and allows screen to follow player
 
         this.addAnimation();
+        //starts add animation function
     },
     setSuper: function(x, y) {
         this._super(me.Entity, 'init', [x, y, {
@@ -25,24 +27,30 @@ game.PlayerEntity = me.Entity.extend({
                     return(new me.Rect(0, 0, 64, 64)).toPolygon();
                     //rectangle of what player entity can walk into/polygon
                 }
+                //spawns player into world
             }]);
         //_super = reaching to the constructor of entity
     },
     setPlayerTimers: function() {
         this.now = new Date().getTime();
+        //sets this.now to Date().getTime();
         this.lastHit = this.now;
+        //sets lastHit to this.now
         this.lastAttack = new Date().getTime(); //haven't used this
     },
     setAttributes: function() {
         this.health = game.data.playerHealth;
+        //sets player health to set variable in game.js
         this.body.setVelocity(game.data.playerMoveSpeed, 20);
         //speed player moves
         this.attack = game.data.playerAttack;
+        //sets player attack to set variable in game.js
     },
     setFlags: function() {
         this.facing = "right";
         //keeps track of which direction player is going
         this.dead = false;
+        //keeps player from dying randomly
     },
     addAnimation: function() {
         this.renderable.addAnimation("idle", [78]);
@@ -72,8 +80,10 @@ game.PlayerEntity = me.Entity.extend({
     checkKeyPressesAndMove: function() {
         if (me.input.isKeyPressed("right")) {
             this.moveRight();
+            //moves player right when "right" key is pressed
         } else if (me.input.isKeyPressed("left")) {
             this.moveLeft();
+            //moves player left when "left key is pressed
         } else {
             this.body.vel.x = 0;
             //keeps player from moving right when key is not pressed
@@ -85,6 +95,7 @@ game.PlayerEntity = me.Entity.extend({
         //implementation of jump ability  
 
         this.attacking = me.input.isKeyPressed("attack");
+        //makes player attack when attack key is pressed
 
     },
     moveRight: function() {
@@ -128,8 +139,10 @@ game.PlayerEntity = me.Entity.extend({
             if (!this.renderable.isCurrentAnimation("walk")) {
                 this.renderable.setCurrentAnimation("walk");
             }
+            //If player is not walking player animation is set to walk
         } else {
             this.renderable.setCurrentAnimation("idle");
+            //if player is not moving animation is ser ro idle
         }
     },
     loseHealth: function(damage) {
@@ -144,6 +157,7 @@ game.PlayerEntity = me.Entity.extend({
             //lowers health of base by 1 if attacked
         } else if (response.b.type === 'EnemyCreep') {
             this.collideWithEnemyCreep(response);
+            //calls a response when colliding with enemy creep
         }
     },
     collideWithEnemyBase: function(response) {
@@ -166,6 +180,7 @@ game.PlayerEntity = me.Entity.extend({
         }
         if (this.checkAttack(xdif, ydif)) {
             response.b.loseHealth(game.data.playerAttack);
+            //enemy base loses as much health as damage dealt by player
         }
     },
     collideWithEnemyCreep: function(response) {
@@ -174,10 +189,12 @@ game.PlayerEntity = me.Entity.extend({
         //keeps track of differences in x and y
 
         this.stopMovement(xdif);
+        //calls stop movement function with a parameter of xdif
 
         if (this.checkAttack(xdif, ydif)) {
             this.hitCreep(response);
         }
+        //calls hitCreep function with parameter of response if checkAttack function with parameters of xdif and ydif is called
     },
     stopMovement: function(xdif) {
         if (xdif > 0) {
@@ -186,6 +203,7 @@ game.PlayerEntity = me.Entity.extend({
             if (this.facing === "left") {
                 this.body.vel.x = 0;
             }
+            //stops player from moving when facing left towards creep while attacking
         } else {
             this.pos.x = this.pos.x - 1;
             //pushes player a bit to the left if coming in from left
@@ -219,7 +237,6 @@ game.PlayerEntity = me.Entity.extend({
     killCreep: function() {
         game.data.gold += 1;
         //adds 1 gold for a creep kill
-        console.log("Current Gold: " + game.data.gold);
     }
 });
 //sets up basic entity "player"

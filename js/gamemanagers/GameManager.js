@@ -1,16 +1,21 @@
 game.ExpirienceManager = Object.extend({
     init: function(x, y, settings) {
         this.alwaysUpdate = true;
+        //continuously updates
         this.gameover = false;
+        //doesn't allow game to be over
     },
     update: function() {
         if (game.data.win === true && !this.gameover) {
             this.gameOver(true);
+            //game is over if game is won but not over
             alert("VICTORY");
+            //plauer is alerted of their victory
         } else if (game.data.win === false && !this.gameover) {
             this.gameOver(false);
-            //if the game is lost and the game isn't over player exp is increased bt 1 and game is ended
+            //game is not over if player has not won and game is not over
             alert("DEFEAT");
+            //player is alerted of their defeat
         }
 
         return true;
@@ -18,14 +23,16 @@ game.ExpirienceManager = Object.extend({
     gameOver: function(win) {
         if (win) {
             game.data.exp += 10;
+            //if game is won player is given 10 experience points
         } else {
             game.data.exp += 1;
-        }
-        console.log(game.data.exp);
+            //if game is lost player is given 1 experience point
+        }        
 
         this.gameover = true;
         //if the game is won and the game isn't over player exp is increased by 10 and the game is ended
         me.save.exp = game.data.exp;
+        //sets save exp to game exp
 
         me.save.exp2 = 4;
         //for testing purposes only
@@ -33,6 +40,7 @@ game.ExpirienceManager = Object.extend({
         $("#register").bind("click", function() {
             $.ajax({
                 type: "POST",
+                //sets type to post
                 url: "php/controller/save-user.php",
                 //sends to create-user
                 data: {
@@ -42,7 +50,9 @@ game.ExpirienceManager = Object.extend({
                     exp3: game.data.exp3,
                     exp4: game.data.exp4
                 },
+                //sets game data
                 dataType: "text"
+                //sets dataType to text \
             })
                     .success(function(response) {
                         if (response === "Invalid username/password") {

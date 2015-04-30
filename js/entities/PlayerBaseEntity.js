@@ -25,6 +25,7 @@ game.PlayerBaseEntity = me.Entity.extend({
         this.renderable.addAnimation("idle", [0]);
         this.renderable.addAnimation("broken", [1]);
         this.renderable.setCurrentAnimation("idle");
+        //adds and sets player base animations
 
 
     },
@@ -38,7 +39,10 @@ game.PlayerBaseEntity = me.Entity.extend({
             this.renderable.setCurrentAnimation("broken");
             //tower's "broken" animation is performed
         }
+        //occurs if tower health is less than or equal to zero
+
         this.body.update(delta);
+        //updates player base
 
         this._super(me.Entity, "update", [delta]);
         return true;
