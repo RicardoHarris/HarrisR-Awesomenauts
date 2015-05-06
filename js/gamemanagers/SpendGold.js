@@ -36,15 +36,15 @@ game.SpendGold = Object.extend({
         me.state.pause(me.state.PLAY);
         me.input.bindKey(me.input.KEY.F1, "F1", true);
         me.input.bindKey(me.input.KEY.F2, "F2", true);
-        me.input.bindKey(me.input.KEY.F3, "F2", true);
-        me.input.bindKey(me.input.KEY.F4, "F2", true);
-        me.input.bindKey(me.input.KEY.F5, "F2", true);
-        me.input.bindKey(me.input.KEY.F6, "F2", true);
+        me.input.bindKey(me.input.KEY.F3, "F3", true);
+        me.input.bindKey(me.input.KEY.F4, "F4", true);
+        me.input.bindKey(me.input.KEY.F5, "F5", true);
+        me.input.bindKey(me.input.KEY.F6, "F6", true);
         this.setBuyText();
     },
     setBuyText: function() {
         new (me.Renderable.extend({
-            init: function() {
+            init: function(x, y, settings) {
                 this._super(me.Renderable, 'init', [game.data.pos.x, game.data.pos.y, 300, 50]);
                 this.font = new me.Font("Arial", 26, "white");
                 this.updateWhenPaused = true;
@@ -75,10 +75,10 @@ game.SpendGold = Object.extend({
 
         me.input.unbindKey(me.input.KEY.F1, "F1", true);
         me.input.unbindKey(me.input.KEY.F2, "F2", true);
-        me.input.unbindKey(me.input.KEY.F3, "F2", true);
-        me.input.unbindKey(me.input.KEY.F4, "F2", true);
-        me.input.unbindKey(me.input.KEY.F5, "F2", true);
-        me.input.unbindKey(me.input.KEY.F6, "F2", true);
+        me.input.unbindKey(me.input.KEY.F3, "F3", true);
+        me.input.unbindKey(me.input.KEY.F4, "F4", true);
+        me.input.unbindKey(me.input.KEY.F5, "F5", true);
+        me.input.unbindKey(me.input.KEY.F6, "F6", true);
         me.game.world.removeChild(game.data.buytext);
     },
     checkBuyKeys: function(){
